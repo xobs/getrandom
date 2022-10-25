@@ -27,6 +27,7 @@
 //! | Hermit            | `x86_64-*-hermit`  | [`RDRAND`]
 //! | SGX               | `x86_64‑*‑sgx`     | [`RDRAND`]
 //! | VxWorks           | `*‑wrs‑vxworks‑*`  | `randABytes` after checking entropy pool initialization with `randSecure`
+//! | Xous              | `*‑xous‑*`         | `_TRNG manager_` server
 //! | ESP-IDF           | `*‑espidf`         | [`esp_fill_random`]
 //! | Emscripten        | `*‑emscripten`     | [`getentropy`][13]
 //! | WASI              | `wasm32‑wasi`      | [`random_get`]
@@ -245,6 +246,8 @@ cfg_if! {
     } else if #[cfg(target_os = "vxworks")] {
         mod util_libc;
         #[path = "vxworks.rs"] mod imp;
+    } else if #[cfg(target_os = "xous")] {
+        #[path = "xous.rs"] mod imp;
     } else if #[cfg(target_os = "solid_asp3")] {
         #[path = "solid.rs"] mod imp;
     } else if #[cfg(target_os = "espidf")] {
